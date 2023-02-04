@@ -3,7 +3,7 @@ import loginImage from "../assets/login.svg";
 import { useForm, useWatch } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { createUser } from "../features/auth/authSlice";
+import { createUser, toggleError } from "../features/auth/authSlice";
 import { toast } from "react-hot-toast";
 const Signup = () => {
   const [disabled, setDisabled] = useState(true);
@@ -43,8 +43,9 @@ const Signup = () => {
     }
     if (!isLoading && isError) {
       toast.error(error, { id: "userAuth" });
+      dispatch(toggleError());
     }
-  }, [isLoading, email, isError, error, navigate]);
+  }, [isLoading, email, isError, error, dispatch, navigate]);
 
   const onSubmit = ({ email, password }) => {
     dispatch(createUser({ email, password }));

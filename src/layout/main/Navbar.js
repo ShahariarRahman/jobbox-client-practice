@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Link, useLocation } from "react-router-dom";
-import { signOutUser } from "../../features/auth/authSlice";
+import { logOutUser } from "../../features/auth/authSlice";
 
 const Navbar = () => {
   const { pathname } = useLocation();
@@ -12,7 +12,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
 
   const handleSignOut = () => {
-    dispatch(signOutUser());
+    dispatch(logOutUser());
   };
   return (
     <nav
