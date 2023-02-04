@@ -4,7 +4,6 @@ import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import loginImage from "../assets/login.svg";
-import { createUser } from "../features/auth/authSlice";
 const Login = () => {
   const { register, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
@@ -29,9 +28,7 @@ const Login = () => {
     }
   }, [isLoading, email, isError, error, navigate]);
 
-  const onSubmit = ({ email, password }) => {
-    dispatch(createUser({ email, password }));
-  };
+  const onSubmit = ({ email, password }) => {};
 
   return (
     <div className="flex h-screen items-center">
