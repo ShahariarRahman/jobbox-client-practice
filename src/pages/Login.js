@@ -1,14 +1,36 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-
+import { toast } from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import loginImage from "../assets/login.svg";
+import { createUser } from "../features/auth/authSlice";
 const Login = () => {
   const { register, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const {
+    user: { email },
+    isLoading,
+    isError,
+    error,
+  } = useSelector((state) => state.auth);
 
-  const onSubmit = (data) => {
-    console.log(data);
+  useEffect(() => {
+    if (isLoading) {
+      toast.loading("Signing in...", { id: "userAuth" });
+    }
+    if (!isLoading && email) {
+      toast.success("Signing Successful", { id: "userAuth" });
+      navigate("/");
+    }
+    if (!isLoading && isError) {
+      toast.error(error, { id: "userAuth" });
+    }
+  }, [isLoading, email, isError, error, navigate]);
+
+  const onSubmit = ({ email, password }) => {
+    dispatch(createUser({ email, password }));
   };
 
   return (

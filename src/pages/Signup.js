@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import loginImage from "../assets/login.svg";
 import { useForm, useWatch } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createUser } from "../features/auth/authSlice";
+import { toast } from "react-hot-toast";
 const Signup = () => {
   const [disabled, setDisabled] = useState(true);
   const { handleSubmit, register, reset, control } = useForm();
@@ -11,6 +12,13 @@ const Signup = () => {
   const confirmPassword = useWatch({ control, name: "confirmPassword" });
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const {
+    user: { email },
+    isLoading,
+    isError,
+    error,
+  } = useSelector((state) => state.auth);
+
   useEffect(() => {
     if (
       password !== undefined &&
@@ -24,6 +32,19 @@ const Signup = () => {
       setDisabled(true);
     }
   }, [password, confirmPassword]);
+
+  useEffect(() => {
+    if (isLoading) {
+      toast.loading("Signing in...", { id: "userAuth" });
+    }
+    if (!isLoading && email) {
+      toast.success("Signing Successful", { id: "userAuth" });
+      navigate("/");
+    }
+    if (!isLoading && isError) {
+      toast.error(error, { id: "userAuth" });
+    }
+  }, [isLoading, email, isError, error, navigate]);
 
   const onSubmit = ({ email, password }) => {
     dispatch(createUser({ email, password }));
