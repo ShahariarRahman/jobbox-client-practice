@@ -1,13 +1,19 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Link, useLocation } from "react-router-dom";
+import { signOutUser } from "../../features/auth/authSlice";
 
 const Navbar = () => {
   const { pathname } = useLocation();
   const {
     user: { email, role },
   } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  const handleSignOut = () => {
+    dispatch(signOutUser());
+  };
   return (
     <nav
       className={`h-14 fixed w-full z-[999] ${
@@ -26,7 +32,9 @@ const Navbar = () => {
 
         {email ? (
           <li>
-            <button className="hover:text-primary">Log Out</button>
+            <button onClick={handleSignOut} className="hover:text-primary">
+              Log Out
+            </button>
           </li>
         ) : (
           <li>
