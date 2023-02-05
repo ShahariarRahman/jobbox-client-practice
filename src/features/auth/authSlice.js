@@ -10,7 +10,7 @@ const initialState = {
     email: "",
     role: "",
   },
-  isLoading: false,
+  isLoading: true,
   isError: false,
   error: "",
 };

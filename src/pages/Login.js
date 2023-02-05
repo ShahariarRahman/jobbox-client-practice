@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import loginImage from "../assets/login.svg";
 import { logInUser, toggleError } from "../features/auth/authSlice";
 const Login = () => {
@@ -16,19 +16,22 @@ const Login = () => {
     error,
   } = useSelector((state) => state.auth);
 
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+
   useEffect(() => {
     if (isLoading) {
       toast.loading("Signing in...", { id: "userAuth" });
     }
     if (!isLoading && email) {
       toast.success("Signing Successful", { id: "userAuth" });
-      navigate("/");
+      navigate(from, { replace: true });
     }
     if (!isLoading && isError) {
       toast.error(error, { id: "userAuth" });
       dispatch(toggleError());
     }
-  }, [isLoading, email, isError, error, dispatch, navigate]);
+  }, [isLoading, email, isError, error, dispatch, navigate, from]);
 
   const onSubmit = ({ email, password }) => {
     dispatch(logInUser({ email, password }));
