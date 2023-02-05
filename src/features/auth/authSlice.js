@@ -110,7 +110,7 @@ const authSlice = createSlice({
       })
       .addCase(getUser.fulfilled, (state, action) => {
         if (action.payload.status) {
-          state.user = action.payload;
+          state.user = action.payload.data;
         } else {
           state.user.email = action.payload;
         }

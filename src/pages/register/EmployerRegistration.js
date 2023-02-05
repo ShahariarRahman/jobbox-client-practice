@@ -3,6 +3,7 @@ import { useForm, useWatch } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { FaChevronLeft } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import { useRegisterMutation } from "../../features/auth/authApi";
 
 const EmployerRegistration = () => {
   const [countries, setCountries] = useState([]);
@@ -16,7 +17,7 @@ const EmployerRegistration = () => {
   });
   const term = useWatch({ control, name: "term" });
   const navigate = useNavigate();
-
+  const [postUser, { isLoading, isSuccess }] = useRegisterMutation();
   const businessCategory = [
     "Automotive",
     "Business Support & Supplies",
@@ -46,8 +47,14 @@ const EmployerRegistration = () => {
       .then((data) => setCountries(data));
   }, []);
 
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/");
+    }
+  }, [navigate, isSuccess]);
+
   const onSubmit = (data) => {
-    console.log(data);
+    postUser({ ...data, role: "employer" });
   };
 
   return (
