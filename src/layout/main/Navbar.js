@@ -22,12 +22,12 @@ const Navbar = () => {
     >
       <ul className="max-w-7xl mx-auto flex gap-3 h-full items-center">
         <li className="flex-auto font-semibold text-2xl">
-          <button to="/">JobBox</button>
+          <Link to="/">JobBox</Link>
         </li>
         <li>
-          <button className="hover:text-primary" to="/jobs">
+          <Link className="hover:text-primary" to="/jobs">
             Jobs
-          </button>
+          </Link>
         </li>
 
         {email ? (
