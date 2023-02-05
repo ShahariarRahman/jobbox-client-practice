@@ -53,6 +53,9 @@ const Signup = () => {
   const onSubmit = ({ email, password }) => {
     dispatch(createUser({ email, password }));
   };
+
+  const handleGoogleLogin = () => {};
+
   return (
     <div className="flex h-screen items-center pt-14">
       <div className="w-1/2">
@@ -116,6 +119,13 @@ const Signup = () => {
                   </span>
                 </p>
               </div>
+              <button
+                type="button"
+                className="font-bold text-white py-3 rounded-full bg-primary w-full"
+                onClick={handleGoogleLogin}
+              >
+                Login with Google
+              </button>
             </div>
           </form>
         </div>

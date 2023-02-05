@@ -4,7 +4,11 @@ import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import loginImage from "../assets/login.svg";
-import { logInUser, toggleError } from "../features/auth/authSlice";
+import {
+  googleLogin,
+  logInUser,
+  toggleError,
+} from "../features/auth/authSlice";
 const Login = () => {
   const { register, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
@@ -35,6 +39,10 @@ const Login = () => {
 
   const onSubmit = ({ email, password }) => {
     dispatch(logInUser({ email, password }));
+  };
+
+  const handleGoogleLogin = () => {
+    dispatch(googleLogin());
   };
 
   return (
@@ -82,6 +90,13 @@ const Login = () => {
                   </span>
                 </p>
               </div>
+              <button
+                type="button"
+                className="font-bold text-white py-3 rounded-full bg-primary w-full"
+                onClick={handleGoogleLogin}
+              >
+                Login with Google
+              </button>
             </div>
           </form>
         </div>
