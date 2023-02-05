@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 import { FiTrash } from "react-icons/fi";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useAddJobMutation } from "../../features/job/jobApi";
 
 const AddJob = () => {
   const {
@@ -12,6 +15,8 @@ const AddJob = () => {
       companyName,
     },
   });
+  const navigate = useNavigate();
+  const [postJob, { isLoading, isSuccess }] = useAddJobMutation();
   const {
     fields: resFields,
     append: resAppend,
@@ -29,8 +34,15 @@ const AddJob = () => {
   } = useFieldArray({ control, name: "requirements" });
 
   const onSubmit = (data) => {
-    console.log(data);
+    postJob(data);
   };
+
+  useEffect(() => {
+    if (!isLoading && isSuccess) {
+      toast.success("Job Posted", { id: "postJob" });
+      navigate("/jobs");
+    }
+  }, [isLoading, isSuccess, navigate]);
 
   return (
     <div className="flex justify-center items-center overflow-auto p-10">
