@@ -1,10 +1,8 @@
-import { async } from "@firebase/util";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   createUserWithEmailAndPassword,
   signOut,
   signInWithEmailAndPassword,
-  onAuthStateChanged,
 } from "firebase/auth";
 import auth from "../../firebase/firebase.config";
 const initialState = {
