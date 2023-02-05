@@ -1,3 +1,4 @@
+import { async } from "@firebase/util";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   createUserWithEmailAndPassword,
@@ -26,6 +27,7 @@ export const createUser = createAsyncThunk(
 export const logOutUser = createAsyncThunk("auth/logOutUser", async () => {
   await signOut(auth);
 });
+
 export const logInUser = createAsyncThunk(
   "auth/logInUser",
   async ({ email, password }) => {
@@ -33,29 +35,10 @@ export const logInUser = createAsyncThunk(
     return data.user.email;
   }
 );
-export const getUser = createAsyncThunk(
-  "auth/getUser",
-  async (data, thunkAPI) => {
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        try {
-          const res = await fetch(
-            `https://explorejobbox-server.vercel.app/user/${user.email}`
-          );
-          const data = await res.json();
-          thunkAPI.dispatch(setUser(data.data));
-        } catch (error) {
-          thunkAPI.dispatch(
-            setUser({
-              email: user.email,
-              role: "",
-            })
-          );
-        }
-      }
-    });
-  }
-);
+
+export const getUser = createAsyncThunk("auth/getUser", async (email) => {
+  console.log(email);
+});
 
 const authSlice = createSlice({
   name: "auth",
@@ -63,9 +46,6 @@ const authSlice = createSlice({
   reducers: {
     toggleError: (state, action) => {
       state.isError = false;
-    },
-    setUser: (state, action) => {
-      state.user = action.payload;
     },
   },
   extraReducers: (build) => {
@@ -119,25 +99,9 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.error = action.error.message;
-      })
-      .addCase(getUser.pending, (state, action) => {
-        state.isLoading = true;
-        state.isError = false;
-        state.error = "";
-      })
-      .addCase(getUser.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isError = false;
-        state.error = "";
-      })
-      .addCase(getUser.rejected, (state, action) => {
-        state.user = { email: "", role: "" };
-        state.isLoading = false;
-        state.isError = true;
-        state.error = action.error.message;
       });
   },
 });
 
-export const { toggleError, setUser } = authSlice.actions;
+export const { toggleError } = authSlice.actions;
 export default authSlice.reducer;
