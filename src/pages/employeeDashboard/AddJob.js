@@ -1,9 +1,17 @@
 import React from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { FiTrash } from "react-icons/fi";
+import { useSelector } from "react-redux";
 
 const AddJob = () => {
-  const { handleSubmit, register, control } = useForm();
+  const {
+    user: { companyName },
+  } = useSelector((state) => state.auth);
+  const { handleSubmit, register, control } = useForm({
+    defaultValues: {
+      companyName,
+    },
+  });
   const {
     fields: resFields,
     append: resAppend,
@@ -98,7 +106,7 @@ const AddJob = () => {
             <div>
               {skillFields.map((item, index) => {
                 return (
-                  <div key={item.key} className="flex items-center gap-3 mb-5">
+                  <div key={index} className="flex items-center gap-3 mb-5">
                     <input
                       className="!w-full"
                       type="text"
@@ -135,7 +143,7 @@ const AddJob = () => {
             <div>
               {resFields.map((item, index) => {
                 return (
-                  <div key={item.key} className=" mb-5 flex items-center gap-3">
+                  <div key={index} className=" mb-5 flex items-center gap-3">
                     <input
                       className="!w-full"
                       type="text"
@@ -172,7 +180,7 @@ const AddJob = () => {
             <div>
               {reqFields.map((item, index) => {
                 return (
-                  <div key={item.key} className=" mb-5 flex items-center gap-3">
+                  <div key={index} className=" mb-5 flex items-center gap-3">
                     <input
                       className="!w-full"
                       type="text"

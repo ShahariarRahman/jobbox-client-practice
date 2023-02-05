@@ -7,6 +7,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import auth from "../../firebase/firebase.config";
+
 const initialState = {
   user: {
     email: "",
