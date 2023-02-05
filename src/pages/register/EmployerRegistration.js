@@ -8,7 +8,8 @@ import { useRegisterMutation } from "../../features/auth/authApi";
 const EmployerRegistration = () => {
   const [countries, setCountries] = useState([]);
   const {
-    user: { email },
+    user: { email, role },
+    isLoading,
   } = useSelector((state) => state.auth);
   const { handleSubmit, register, control } = useForm({
     defaultValues: {
@@ -17,7 +18,7 @@ const EmployerRegistration = () => {
   });
   const term = useWatch({ control, name: "term" });
   const navigate = useNavigate();
-  const [postUser, { isLoading, isSuccess }] = useRegisterMutation();
+  const [postUser] = useRegisterMutation();
   const businessCategory = [
     "Automotive",
     "Business Support & Supplies",
@@ -48,10 +49,10 @@ const EmployerRegistration = () => {
   }, []);
 
   useEffect(() => {
-    if (isSuccess) {
+    if (role === "employer") {
       navigate("/");
     }
-  }, [navigate, isSuccess]);
+  }, [navigate, role]);
 
   const onSubmit = (data) => {
     postUser({ ...data, role: "employer" });
