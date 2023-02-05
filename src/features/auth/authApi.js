@@ -11,3 +11,5 @@ const authApi = apiSlice.injectEndpoints({
     }),
   }),
 });
+
+export const { useRegisterMutation } = authApi;
