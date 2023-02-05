@@ -1,8 +1,9 @@
 import React from "react";
-
 import meeting from "../assets/meeting.jpg";
 import { BsArrowRightShort, BsArrowReturnRight } from "react-icons/bs";
+import { useParams } from "react-router-dom";
 const JobDetails = () => {
+  const { id } = useParams();
   const {
     companyName,
     position,
@@ -18,7 +19,6 @@ const JobDetails = () => {
     queries,
     _id,
   } = {};
-
   return (
     <div className="pt-14 grid grid-cols-12 gap-5">
       <div className="col-span-9 mb-10">
@@ -37,8 +37,8 @@ const JobDetails = () => {
           <div>
             <h1 className="text-primary text-lg font-medium mb-3">Skills</h1>
             <ul>
-              {skills.map((skill) => (
-                <li className="flex items-center">
+              {skills?.map((skill, i) => (
+                <li key={i} className="flex items-center">
                   <BsArrowRightShort /> <span>{skill}</span>
                 </li>
               ))}
@@ -49,8 +49,8 @@ const JobDetails = () => {
               Requirements
             </h1>
             <ul>
-              {requirements.map((skill) => (
-                <li className="flex items-center">
+              {requirements?.map((skill, i) => (
+                <li key={i} className="flex items-center">
                   <BsArrowRightShort /> <span>{skill}</span>
                 </li>
               ))}
@@ -61,8 +61,8 @@ const JobDetails = () => {
               Responsibilities
             </h1>
             <ul>
-              {responsibilities.map((skill) => (
-                <li className="flex items-center">
+              {responsibilities?.map((skill, i) => (
+                <li key={i} className="flex items-center">
                   <BsArrowRightShort /> <span>{skill}</span>
                 </li>
               ))}
@@ -76,8 +76,8 @@ const JobDetails = () => {
               General Q&A
             </h1>
             <div className="text-primary my-2">
-              {queries.map(({ question, email, reply, id }) => (
-                <div>
+              {queries?.map(({ question, email, reply, id }, i) => (
+                <div key={i}>
                   <small>{email}</small>
                   <p className="text-lg font-medium">{question}</p>
                   {reply?.map((item) => (
@@ -160,7 +160,7 @@ const JobDetails = () => {
           </div>
           <div>
             <p>Website</p>
-            <a className="font-semibold text-lg" href="#">
+            <a className="font-semibold text-lg" href="/">
               https://website.com
             </a>
           </div>
