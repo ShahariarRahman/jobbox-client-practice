@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import candidate from "../../assets/candidate.svg";
 import employer from "../../assets/employer.svg";
@@ -6,13 +7,22 @@ import CandidateRegistration from "./CandidateRegistration";
 import EmployerRegistration from "./EmployerRegistration";
 
 const AccountCreator = () => {
+  const {
+    user: { role },
+  } = useSelector((state) => state.auth);
+
   const navigate = useNavigate();
   const { type } = useParams();
+
+  useEffect(() => {
+    if (role === "candidate" || role === "employer") {
+      navigate("/");
+    }
+  }, [navigate, role]);
 
   if (type === "candidate") {
     return <CandidateRegistration />;
   }
-
   if (type === "employer") {
     return <EmployerRegistration />;
   }
