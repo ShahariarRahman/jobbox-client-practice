@@ -2,11 +2,7 @@ import React, { useEffect } from "react";
 import meeting from "../assets/meeting.jpg";
 import { BsArrowRightShort, BsArrowReturnRight } from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  useApplyJobMutation,
-  useGetAppliedJobsQuery,
-  useJobByIdQuery,
-} from "../features/job/jobApi";
+import { useApplyJobMutation, useJobByIdQuery } from "../features/job/jobApi";
 import Loading from "../components/reusable/Loading";
 import { useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
@@ -16,8 +12,6 @@ const JobDetails = () => {
   const navigate = useNavigate();
   const { data, isLoading: isLoadingJobByIdQuery } = useJobByIdQuery(id);
   const [applyJob, { isSuccessApplyJob }] = useApplyJobMutation();
-  const { data: appliedJobs, isLoading: isLoadingAppliedJobs } =
-    useGetAppliedJobsQuery(user?.email, { skip: !user.email });
 
   useEffect(() => {
     if (isSuccessApplyJob) {
@@ -39,12 +33,12 @@ const JobDetails = () => {
     overview,
     queries,
     _id,
+    applicants,
   } = data?.data || {};
 
-  if (isLoadingAppliedJobs || isLoadingJobByIdQuery) {
+  if (isLoadingJobByIdQuery) {
     return <Loading />;
   }
-
   const handleApply = () => {
     if (user.role === "employer") {
       toast.error("You need an candidate account to apply.", {
@@ -69,7 +63,7 @@ const JobDetails = () => {
         <div className="space-y-5">
           <div className="flex justify-between items-center mt-5">
             <h1 className="text-xl font-semibold text-primary">{position}</h1>
-            {appliedJobs?.data.find((job) => job._id === _id) ? (
+            {applicants?.find((applicant) => applicant.id === user._id) ? (
               <button disabled className="btn">
                 Applied
               </button>
