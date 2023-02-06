@@ -14,7 +14,6 @@ const initialState = {
     role: "",
   },
   isLoading: true,
-  isSuccess: false,
   isError: false,
   error: "",
 };
@@ -69,20 +68,17 @@ const authSlice = createSlice({
       // create account
       .addCase(createUser.pending, (state, action) => {
         state.isLoading = true;
-        state.isSuccess = false;
         state.isError = false;
         state.error = "";
       })
       .addCase(createUser.fulfilled, (state, action) => {
         state.user.email = action.payload;
-        state.isSuccess = true;
         state.isLoading = false;
         state.isError = false;
         state.error = "";
       })
       .addCase(createUser.rejected, (state, action) => {
         state.user = { email: "", role: "" };
-        state.isSuccess = false;
         state.isLoading = false;
         state.isError = true;
         state.error = action.error.message;
@@ -90,19 +86,16 @@ const authSlice = createSlice({
       // logout
       .addCase(logOutUser.pending, (state, action) => {
         state.isLoading = true;
-        state.isSuccess = false;
         state.isError = false;
         state.error = "";
       })
       .addCase(logOutUser.fulfilled, (state, action) => {
         state.user = { email: "", role: "" };
-        state.isSuccess = true;
         state.isLoading = false;
         state.isError = false;
         state.error = "";
       })
       .addCase(logOutUser.rejected, (state, action) => {
-        state.isSuccess = false;
         state.isLoading = false;
         state.isError = true;
         state.error = action.error.message;
@@ -110,20 +103,17 @@ const authSlice = createSlice({
       // login: email Password
       .addCase(logInUser.pending, (state, action) => {
         state.isLoading = true;
-        state.isSuccess = false;
         state.isError = false;
         state.error = "";
       })
       .addCase(logInUser.fulfilled, (state, action) => {
         state.user.email = action.payload;
-        state.isSuccess = true;
         state.isLoading = false;
         state.isError = false;
         state.error = "";
       })
       .addCase(logInUser.rejected, (state, action) => {
         state.user = { email: "", role: "" };
-        state.isSuccess = false;
         state.isLoading = false;
         state.isError = true;
         state.error = action.error.message;
@@ -131,20 +121,17 @@ const authSlice = createSlice({
       // login: google account
       .addCase(googleLogin.pending, (state, action) => {
         state.isLoading = true;
-        state.isSuccess = false;
         state.isError = false;
         state.error = "";
       })
       .addCase(googleLogin.fulfilled, (state, action) => {
         state.user.email = action.payload;
-        state.isSuccess = true;
         state.isLoading = false;
         state.isError = false;
         state.error = "";
       })
       .addCase(googleLogin.rejected, (state, action) => {
         state.user = { email: "", role: "" };
-        state.isSuccess = false;
         state.isLoading = false;
         state.isError = true;
         state.error = action.error.message;
@@ -152,7 +139,6 @@ const authSlice = createSlice({
       // get user: from database
       .addCase(getUser.pending, (state, action) => {
         state.isLoading = true;
-        state.isSuccess = false;
         state.isError = false;
         state.error = "";
       })
@@ -162,14 +148,12 @@ const authSlice = createSlice({
         } else {
           state.user.email = action.payload;
         }
-        state.isSuccess = true;
         state.isLoading = false;
         state.isError = false;
         state.error = "";
       })
       .addCase(getUser.rejected, (state, action) => {
         state.user = { email: "", role: "" };
-        state.isSuccess = false;
         state.isLoading = false;
         state.isError = true;
         state.error = action.error.message;

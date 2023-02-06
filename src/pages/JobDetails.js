@@ -12,12 +12,12 @@ import { useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 const JobDetails = () => {
   const { id } = useParams();
-  const { user, isSuccess } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const { data, isLoading: isLoadingJobByIdQuery } = useJobByIdQuery(id);
   const [applyJob, { isSuccessApplyJob }] = useApplyJobMutation();
   const { data: appliedJobs, isLoading: isLoadingAppliedJobs } =
-    useGetAppliedJobsQuery(user?.email, { skip: !isSuccess });
+    useGetAppliedJobsQuery(user?.email, { skip: !user.email });
 
   useEffect(() => {
     if (isSuccessApplyJob) {
