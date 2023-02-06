@@ -2,8 +2,11 @@ import React from "react";
 import meeting from "../assets/meeting.jpg";
 import { BsArrowRightShort, BsArrowReturnRight } from "react-icons/bs";
 import { useParams } from "react-router-dom";
+import { useJobByIdQuery } from "../features/job/jobApi";
+import Loading from "../components/reusable/Loading";
 const JobDetails = () => {
   const { id } = useParams();
+  const { data, isLoading } = useJobByIdQuery(id);
   const {
     companyName,
     position,
@@ -18,7 +21,12 @@ const JobDetails = () => {
     overview,
     queries,
     _id,
-  } = {};
+  } = data?.data || {};
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <div className="pt-14 grid grid-cols-12 gap-5">
       <div className="col-span-9 mb-10">
