@@ -1,16 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import meeting from "../assets/meeting.jpg";
 import { BsArrowRightShort, BsArrowReturnRight } from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
-import { useJobByIdQuery } from "../features/job/jobApi";
+import { useApplyJobMutation, useJobByIdQuery } from "../features/job/jobApi";
 import Loading from "../components/reusable/Loading";
 import { useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 const JobDetails = () => {
   const { id } = useParams();
   const { user } = useSelector((state) => state.auth);
-  const { data, isLoading } = useJobByIdQuery(id);
   const navigate = useNavigate();
+  const { data, isLoading } = useJobByIdQuery(id);
+  const [applyJob, { isSuccess }] = useApplyJobMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Job apply successful", { id: "applyJob" });
+    }
+  }, [isSuccess]);
+
   const {
     companyName,
     position,
@@ -43,6 +51,7 @@ const JobDetails = () => {
       return;
     }
     const data = { userId: user._id, jobId: _id, email: user.email };
+    applyJob(data);
   };
 
   return (
