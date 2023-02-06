@@ -6,9 +6,11 @@ import { useApplyJobMutation, useJobByIdQuery } from "../features/job/jobApi";
 import Loading from "../components/reusable/Loading";
 import { useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
+import { useForm } from "react-hook-form";
 const JobDetails = () => {
   const { id } = useParams();
   const { user } = useSelector((state) => state.auth);
+  const { register, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
   const { data, isLoading } = useJobByIdQuery(id);
   const [applyJob, { isSuccess }] = useApplyJobMutation();
@@ -52,6 +54,16 @@ const JobDetails = () => {
     }
     const data = { userId: user._id, jobId: _id, email: user.email };
     applyJob(data);
+  };
+
+  const handleQuestion = ({ question }) => {
+    const data = {
+      jobId: _id,
+      userId: user._id,
+      email: user.email,
+      question,
+    };
+    console.log(data);
   };
 
   return (
@@ -128,33 +140,46 @@ const JobDetails = () => {
                       <BsArrowReturnRight /> {item}
                     </p>
                   ))}
-
-                  <div className="flex gap-3 my-5">
-                    <input placeholder="Reply" type="text" className="w-full" />
-                    <button
-                      className="shrink-0 h-14 w-14 bg-primary/10 border border-primary hover:bg-primary rounded-full transition-all  grid place-items-center text-primary hover:text-white"
-                      type="button"
-                    >
-                      <BsArrowRightShort size={30} />
-                    </button>
-                  </div>
+                  {user.role === "employer" && (
+                    <form onSubmit={handleSubmit(handleQuestion)}>
+                      <div className="flex gap-3 my-5">
+                        <input
+                          {...register("reply")}
+                          placeholder="Reply"
+                          type="text"
+                          className="w-full"
+                        />
+                        <button
+                          className="shrink-0 h-14 w-14 bg-primary/10 border border-primary hover:bg-primary rounded-full transition-all  grid place-items-center text-primary hover:text-white"
+                          type="submit"
+                        >
+                          <BsArrowRightShort size={30} />
+                        </button>
+                      </div>
+                    </form>
+                  )}
                 </div>
               ))}
             </div>
 
-            <div className="flex gap-3 my-5">
-              <input
-                placeholder="Ask a question..."
-                type="text"
-                className="w-full"
-              />
-              <button
-                className="shrink-0 h-14 w-14 bg-primary/10 border border-primary hover:bg-primary rounded-full transition-all  grid place-items-center text-primary hover:text-white"
-                type="button"
-              >
-                <BsArrowRightShort size={30} />
-              </button>
-            </div>
+            {user.role === "candidate" && (
+              <form onSubmit={handleSubmit(handleQuestion)}>
+                <div className="flex gap-3 my-5">
+                  <input
+                    {...register("question")}
+                    placeholder="Ask a question..."
+                    type="text"
+                    className="w-full"
+                  />
+                  <button
+                    className="shrink-0 h-14 w-14 bg-primary/10 border border-primary hover:bg-primary rounded-full transition-all  grid place-items-center text-primary hover:text-white"
+                    type="submit"
+                  >
+                    <BsArrowRightShort size={30} />
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
         </div>
       </div>
