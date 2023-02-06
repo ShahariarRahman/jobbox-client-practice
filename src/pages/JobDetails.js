@@ -10,14 +10,14 @@ const JobDetails = () => {
   const { id } = useParams();
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
-  const { data, isLoading: isLoadingJobByIdQuery } = useJobByIdQuery(id);
-  const [applyJob, { isSuccessApplyJob }] = useApplyJobMutation();
+  const { data, isLoading } = useJobByIdQuery(id);
+  const [applyJob, { isSuccess }] = useApplyJobMutation();
 
   useEffect(() => {
-    if (isSuccessApplyJob) {
+    if (isSuccess) {
       toast.success("Job apply successful", { id: "applyJob" });
     }
-  }, [isSuccessApplyJob, navigate]);
+  }, [isSuccess]);
 
   const {
     companyName,
@@ -36,7 +36,7 @@ const JobDetails = () => {
     applicants,
   } = data?.data || {};
 
-  if (isLoadingJobByIdQuery) {
+  if (isLoading) {
     return <Loading />;
   }
   const handleApply = () => {
