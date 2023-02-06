@@ -2,21 +2,26 @@ import React, { useEffect } from "react";
 import meeting from "../assets/meeting.jpg";
 import { BsArrowRightShort, BsArrowReturnRight } from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
-import { useApplyJobMutation, useJobByIdQuery } from "../features/job/jobApi";
+import {
+  useApplyJobMutation,
+  useGetAppliedJobsQuery,
+  useJobByIdQuery,
+} from "../features/job/jobApi";
 import Loading from "../components/reusable/Loading";
 import { useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 const JobDetails = () => {
   const { id } = useParams();
-  const { user } = useSelector((state) => state.auth);
+  const { user, isLoading } = useSelector((state) => state.auth);
   const navigate = useNavigate();
-  const { data, isLoading } = useJobByIdQuery(id);
+  const { data, isLoading: isLoadingJobByIdQuery } = useJobByIdQuery(id);
   const [applyJob, { isSuccess }] = useApplyJobMutation();
+  const { data: appliedJobs, isLoading: isLoadingAppliedJobs } =
+    useGetAppliedJobsQuery(user?.email, { skip: isLoading });
 
   useEffect(() => {
     if (isSuccess) {
       toast.success("Job apply successful", { id: "applyJob" });
-      navigate("/dashboard/applied-jobs");
     }
   }, [isSuccess, navigate]);
 
@@ -36,7 +41,7 @@ const JobDetails = () => {
     _id,
   } = data?.data || {};
 
-  if (isLoading) {
+  if (isLoadingAppliedJobs || isLoadingJobByIdQuery) {
     return <Loading />;
   }
 
@@ -64,9 +69,15 @@ const JobDetails = () => {
         <div className="space-y-5">
           <div className="flex justify-between items-center mt-5">
             <h1 className="text-xl font-semibold text-primary">{position}</h1>
-            <button onClick={handleApply} className="btn">
-              Apply
-            </button>
+            {appliedJobs?.data.find((job) => job._id === _id) ? (
+              <button disabled className="btn">
+                Applied
+              </button>
+            ) : (
+              <button onClick={handleApply} className="btn">
+                Apply
+              </button>
+            )}
           </div>
           <div>
             <h1 className="text-primary text-lg font-medium mb-3">Overview</h1>
