@@ -24,6 +24,7 @@ function App() {
   if (isLoading) {
     return <Loading />;
   }
+
   return (
     <>
       <RouterProvider router={routes} />
