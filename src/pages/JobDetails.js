@@ -2,7 +2,11 @@ import React, { useEffect } from "react";
 import meeting from "../assets/meeting.jpg";
 import { BsArrowRightShort, BsArrowReturnRight } from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
-import { useApplyJobMutation, useJobByIdQuery } from "../features/job/jobApi";
+import {
+  useApplyJobMutation,
+  useAskQuestionMutation,
+  useJobByIdQuery,
+} from "../features/job/jobApi";
 import Loading from "../components/reusable/Loading";
 import { useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
@@ -14,6 +18,7 @@ const JobDetails = () => {
   const navigate = useNavigate();
   const { data, isLoading } = useJobByIdQuery(id);
   const [applyJob, { isSuccess }] = useApplyJobMutation();
+  const [sendQuestion] = useAskQuestionMutation();
 
   useEffect(() => {
     if (isSuccess) {
@@ -63,7 +68,7 @@ const JobDetails = () => {
       email: user.email,
       question,
     };
-    console.log(data);
+    sendQuestion(data);
   };
 
   return (
