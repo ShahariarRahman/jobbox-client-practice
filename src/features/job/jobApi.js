@@ -34,6 +34,7 @@ const jobApi = apiSlice.injectEndpoints({
       query: (id) => ({
         url: `/job/${id}`,
       }),
+      providesTags: ["Job"],
     }),
   }),
 });
