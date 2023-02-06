@@ -16,8 +16,9 @@ const JobDetails = () => {
   useEffect(() => {
     if (isSuccess) {
       toast.success("Job apply successful", { id: "applyJob" });
+      navigate("/dashboard/applied-jobs");
     }
-  }, [isSuccess]);
+  }, [isSuccess, navigate]);
 
   const {
     companyName,
