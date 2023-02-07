@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import meeting from "../assets/meeting.jpg";
 import { BsArrowRightShort, BsArrowReturnRight } from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
@@ -6,12 +6,15 @@ import {
   useApplyJobMutation,
   useAskQuestionMutation,
   useJobByIdQuery,
+  useReplyMutation,
 } from "../features/job/jobApi";
 import Loading from "../components/reusable/Loading";
 import { useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 import { useForm } from "react-hook-form";
+
 const JobDetails = () => {
+  const [reply, setReply] = useState("");
   const { id } = useParams();
   const { user } = useSelector((state) => state.auth);
   const { register, handleSubmit, reset } = useForm();
@@ -19,6 +22,7 @@ const JobDetails = () => {
   const { data, isLoading } = useJobByIdQuery(id);
   const [applyJob, { isSuccess }] = useApplyJobMutation();
   const [sendQuestion] = useAskQuestionMutation();
+  const [sendReply] = useReplyMutation();
 
   useEffect(() => {
     if (isSuccess) {
@@ -69,6 +73,13 @@ const JobDetails = () => {
       question,
     };
     sendQuestion(data);
+  };
+  const handleReply = (id) => {
+    const data = {
+      reply,
+      userId: id,
+    };
+    sendReply(data);
   };
 
   return (
@@ -140,28 +151,30 @@ const JobDetails = () => {
                 <div key={i}>
                   <small>{email}</small>
                   <p className="text-lg font-medium">{question}</p>
-                  {reply?.map((item) => (
-                    <p className="flex items-center gap-2 relative left-5">
+                  {reply?.map((item, i) => (
+                    <p
+                      key={i}
+                      className="flex items-center gap-2 relative left-5"
+                    >
                       <BsArrowReturnRight /> {item}
                     </p>
                   ))}
                   {user.role === "employer" && (
-                    <form onSubmit={handleSubmit(handleQuestion)}>
-                      <div className="flex gap-3 my-5">
-                        <input
-                          {...register("reply")}
-                          placeholder="Reply"
-                          type="text"
-                          className="w-full"
-                        />
-                        <button
-                          className="shrink-0 h-14 w-14 bg-primary/10 border border-primary hover:bg-primary rounded-full transition-all  grid place-items-center text-primary hover:text-white"
-                          type="submit"
-                        >
-                          <BsArrowRightShort size={30} />
-                        </button>
-                      </div>
-                    </form>
+                    <div className="flex gap-3 my-5">
+                      <input
+                        onBlur={(e) => setReply(e.target.value)}
+                        placeholder="Reply"
+                        type="text"
+                        className="w-full"
+                      />
+                      <button
+                        onClick={() => handleReply(id)}
+                        className="shrink-0 h-14 w-14 bg-primary/10 border border-primary hover:bg-primary rounded-full transition-all  grid place-items-center text-primary hover:text-white"
+                        type="submit"
+                      >
+                        <BsArrowRightShort size={30} />
+                      </button>
+                    </div>
                   )}
                 </div>
               ))}
