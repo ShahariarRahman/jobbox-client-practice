@@ -91,7 +91,7 @@ const JobDetails = () => {
         <div className="space-y-5">
           <div className="flex justify-between items-center mt-5">
             <h1 className="text-xl font-semibold text-primary">{position}</h1>
-            {user.role === "candidate" &&
+            {user.role !== "employer" &&
               (applicants?.find((applicant) => applicant.id === user._id) ? (
                 <button disabled className="btn">
                   Applied
@@ -109,17 +109,15 @@ const JobDetails = () => {
               ) : (
                 <>
                   <div className="relative">
-                    <p className="absolute rounded-full -top-3 -right-1 bg-primary w-7 h-7 text-white grid place-content-center text-xs">
+                    <p className="absolute rounded-full -top-3 -right-1 bg-secondary border border-primary w-7 h-7 text-black grid place-content-center text-xs font-medium duration-200">
                       3
                     </p>
-                    <button className="btn flex items-center">
+                    <button className="btn flex">
                       <IoIosPeople className="text-2xl" />
                       <span className="ml-1">See all applicants</span>
                     </button>
                   </div>
-                  <button onClick={handleApply} className="btn">
-                    Close Application
-                  </button>
+                  <button className="btn">Close Application</button>
                 </>
               ))}
           </div>
