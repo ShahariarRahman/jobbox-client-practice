@@ -12,6 +12,7 @@ import Loading from "../components/reusable/Loading";
 import { useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 import { useForm } from "react-hook-form";
+import { IoIosPeople } from "react-icons/io";
 
 const JobDetails = () => {
   const [reply, setReply] = useState("");
@@ -81,7 +82,6 @@ const JobDetails = () => {
     };
     sendReply(data);
   };
-
   return (
     <div className="pt-14 grid grid-cols-12 gap-5">
       <div className="col-span-9 mb-10">
@@ -91,15 +91,37 @@ const JobDetails = () => {
         <div className="space-y-5">
           <div className="flex justify-between items-center mt-5">
             <h1 className="text-xl font-semibold text-primary">{position}</h1>
-            {applicants?.find((applicant) => applicant.id === user._id) ? (
-              <button disabled className="btn">
-                Applied
-              </button>
-            ) : (
-              <button onClick={handleApply} className="btn">
-                Apply
-              </button>
-            )}
+            {user.role === "candidate" &&
+              (applicants?.find((applicant) => applicant.id === user._id) ? (
+                <button disabled className="btn">
+                  Applied
+                </button>
+              ) : (
+                <button onClick={handleApply} className="btn">
+                  Apply
+                </button>
+              ))}
+            {user.role === "employer" &&
+              (applicants?.find((applicant) => applicant.id === user._id) ? (
+                <button disabled className="btn">
+                  Application Closed
+                </button>
+              ) : (
+                <>
+                  <div className="relative">
+                    <p className="absolute rounded-full -top-3 -right-1 bg-primary w-7 h-7 text-white grid place-content-center text-xs">
+                      3
+                    </p>
+                    <button className="btn flex items-center">
+                      <IoIosPeople className="text-2xl" />
+                      <span className="ml-1">See all applicants</span>
+                    </button>
+                  </div>
+                  <button onClick={handleApply} className="btn">
+                    Close Application
+                  </button>
+                </>
+              ))}
           </div>
           <div>
             <h1 className="text-primary text-lg font-medium mb-3">Overview</h1>
