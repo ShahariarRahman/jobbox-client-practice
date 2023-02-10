@@ -29,6 +29,11 @@ const Navbar = () => {
             Jobs
           </Link>
         </li>
+        <li>
+          <Link className="hover:text-primary" to="/conversation">
+            Massages
+          </Link>
+        </li>
 
         {email ? (
           <li>

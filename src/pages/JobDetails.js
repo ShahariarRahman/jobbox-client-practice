@@ -109,7 +109,7 @@ const JobDetails = () => {
               ) : (
                 <>
                   <div className="relative">
-                    <p className="absolute rounded-full -top-3 -right-1 bg-secondary border border-primary w-7 h-7 text-black grid place-content-center text-xs font-medium duration-200">
+                    <p className="absolute rounded-full -top-3 -right-1 bg-secondary border border-primary w-7 h-7 text-black grid place-content-center text-xs font-medium">
                       3
                     </p>
                     <button className="btn flex">
