@@ -7,9 +7,9 @@ info.js
 .vscode
 
 # firebase
+firebase.json
 .firebaserc
 .firebase
-/.firebase
 firebase-debug.log
 
 # dependencies
