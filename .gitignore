@@ -6,6 +6,12 @@ info.js
 # vsCode
 .vscode
 
+# firebase
+.firebaserc
+.firebase
+/.firebase
+firebase-debug.log
+
 # dependencies
 /node_modules
 /.pnp
