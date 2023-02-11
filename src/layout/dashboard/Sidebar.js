@@ -8,12 +8,12 @@ const Sidebar = () => {
   } = useSelector((state) => state.auth);
 
   const employerRoutes = [
-    { name: "Add job", path: "add-job" },
     { name: "User Profile", path: "/dashboard" },
+    { name: "Add job", path: "add-job" },
   ];
   const candidateRoutes = [
-    { name: "Applied jobs", path: "applied-jobs" },
     { name: "User Profile", path: "/dashboard" },
+    { name: "Applied jobs", path: "applied-jobs" },
   ];
 
   return (

@@ -14,6 +14,7 @@ import CandidateDashboard from "../pages/candidateDashboard/CandidateDashboard";
 import AppliedJobs from "../pages/candidateDashboard/AppliedJobs";
 import UserInformation from "../pages/userInformation/UserInformation";
 import Conversation from "../pages/conversation/Conversation";
+import CandidateDetails from "../pages/CandidateDetails";
 
 const routes = createBrowserRouter([
   {
@@ -30,7 +31,11 @@ const routes = createBrowserRouter([
       },
       {
         path: "/conversation",
-        element: <Conversation />,
+        element: (
+          <PrivateRoute>
+            <Conversation />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/job-details/:id",
@@ -57,6 +62,14 @@ const routes = createBrowserRouter([
         element: (
           <PrivateRoute>
             <AccountCreator />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/candidateDetails/:email",
+        element: (
+          <PrivateRoute>
+            <CandidateDetails />
           </PrivateRoute>
         ),
       },

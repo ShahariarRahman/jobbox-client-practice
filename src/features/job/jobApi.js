@@ -18,6 +18,14 @@ const jobApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Job"],
     }),
+    closeApplication: builder.mutation({
+      query: (data) => ({
+        url: "/close-application",
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["Job"],
+    }),
     askQuestion: builder.mutation({
       query: (data) => ({
         url: "/query",
@@ -52,6 +60,11 @@ const jobApi = apiSlice.injectEndpoints({
       }),
       providesTags: ["Job"],
     }),
+    getUserInformation: builder.query({
+      query: (email) => ({
+        url: `/user/${email}`,
+      }),
+    }),
   }),
 });
 
@@ -63,4 +76,6 @@ export const {
   useGetAppliedJobsQuery,
   useAskQuestionMutation,
   useReplyMutation,
+  useGetUserInformationQuery,
+  useCloseApplicationMutation,
 } = jobApi;
